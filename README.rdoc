@@ -1,0 +1,43 @@
+= Contacts Client
+
+== Usage
+
+=== For a Rails app
+
+In Gemfile
+
+    gem 'contacts_client'
+
+And you should define:
+
+    Contacts::HYDRA
+    Contacts::API_KEY
+
+=== For a non-Rails app
+
+In Gemfile
+
+    gem 'contacts_client'
+
+# TODO ...
+
+== TESTING
+
+For running gems specs run
+
+    rake
+
+== Updating gem
+
+=== Build gem locally:
+
+    gem build contacts_client.gemspec
+
+=== Push to rubygems
+
+    gem push contacts_client-X.Y.Z.gem
+
+== TODO
+
+  * specs!
+  * non-Rails app usage example
