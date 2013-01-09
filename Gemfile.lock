@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    contacts_client (0.0.2)
+    contacts_client (0.0.3)
       logical_model (~> 0.4.1)
       railties (~> 3.1)
 
