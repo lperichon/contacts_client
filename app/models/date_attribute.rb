@@ -17,6 +17,12 @@ class DateAttribute < ContactAttribute
     self.class.name
   end
 
+  # Is this a birthday with year?
+  # @return [Boolean] 
+  def is_a_complete_birthday?
+    self.category == 'birth_day' && !self.year.blank? && self.year!='-'
+  end
+
   private
 
   def set_value

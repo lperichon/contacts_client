@@ -115,6 +115,18 @@ class PadmaContact < LogicalModel
     local_statuses.select{|s|s['value']=='prospect'}.map{|s|s['account_name']}
   end
 
+  # Returns age in years of the contact or nil if age not available
+  # @return [Integer/NilClass]
+  def age
+    birthday = self.date_attributes.select{|da| da.is_a_complete_birthday?}[0]
+    now = Time.now.utc.to_date
+    if birthday
+      now.year - birthday.year.to_i - ((now.month > birthday.month.to_i || (now.month == birthday.month.to_i && now.day >= birthday.day.to_i)) ? 0 : 1)
+    else
+      nil
+    end
+  end
+
   def check_duplicates
     @check_duplicates || false
   end
