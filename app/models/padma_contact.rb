@@ -24,6 +24,7 @@ class PadmaContact < LogicalModel
       :linked, # will only be setted if #find specifies account_name
       :check_duplicates,
       :email, # Primary email (contact attribute)
+      :estimated_age, # Estimated age (contact attribute)
       :telephone, # Primary telephone (contact attribute)
       :in_active_merge
     ]
