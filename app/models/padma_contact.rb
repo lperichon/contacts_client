@@ -10,6 +10,7 @@ class PadmaContact < LogicalModel
       :_id,
       :first_name, :last_name,
       :gender,
+      :estimated_age,
       :avatar,
       :status,
       :local_status, # will only be setted if #find specifies account_name
