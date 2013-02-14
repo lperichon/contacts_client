@@ -102,7 +102,7 @@ class PadmaContact < LogicalModel
   end
 
   def facebook_id
-    self.contact_attributes.select{|attr| attr.is_a?(SocialNetworkId) && attr.category == "facebook"}
+    self.contact_attributes.select{|attr| attr.is_a?(SocialNetworkId) && attr.category == "facebook"}.first
   end
 
   def mobiles
