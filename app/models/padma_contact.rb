@@ -42,6 +42,7 @@ class PadmaContact < LogicalModel
 
   validates_associated :contact_attributes
   validates_associated :attachments
+  validates_associated :tags
 
   def json_root
     :contact
