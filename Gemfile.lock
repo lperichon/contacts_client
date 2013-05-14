@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    contacts_client (0.0.12)
+    contacts_client (0.0.14)
       logical_model (~> 0.5.0)
-      railties (~> 3.1)
+      railties (>= 3.1)
 
 GEM
   remote: http://rubygems.org/
@@ -39,7 +39,7 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
       railties (>= 3.0.0)
-    logical_model (0.5.0)
+    logical_model (0.5.1)
       activemodel
       activesupport
       ethon (= 0.4.2)
