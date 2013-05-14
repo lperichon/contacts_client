@@ -4,7 +4,7 @@ source "http://rubygems.org"
 # Specify your gem's dependencies in padma-assets.gemspec
 gemspec
 
-gem 'logical_model', '0.4.1', path: '~/ws/padma/libraries/logical_model/pkg'
+gem 'logical_model', '0.5.1', path: '~/ws/padma/libraries/logical_model/pkg'
 
 group :test do
   gem 'rspec'
