@@ -1,6 +1,6 @@
 # encoding: UTF-8
 # wrapper for PADMA-Contacts API interaction
-# Configuration for LogicalModel on /config/initializers/logical_model.rb
+# Configuration for LogicalModel on /config/initializers/contacts_client.rb
 class PadmaContact < LogicalModel
 
   self.hydra = Contacts::HYDRA
@@ -99,27 +99,31 @@ class PadmaContact < LogicalModel
   end
 
   ContactAttribute::AVAILABLE_TYPES.each do |type|
-    define_method(type.to_s.pluralize) { self.contact_attributes.reject {|attr| !attr.is_a? type.to_s.camelize.constantize}.sort_by {|x| [x.primary ? 0 : 1, x._id]} }
+    define_method(type.to_s.pluralize) do
+      if self.contact_attributes
+        self.contact_attributes.reject { |attr| !attr.is_a? type.to_s.camelize.constantize }.sort_by { |x| [x.primary ? 0 : 1, x._id] }
+      end
+    end
   end
 
   def facebook_id
-    self.contact_attributes.select{|attr| attr.is_a?(SocialNetworkId) && attr.category == "facebook"}.first
+    self.contact_attributes.select{|attr| attr.is_a?(SocialNetworkId) && attr.category == "facebook"}.first if self.contact_attributes
   end
 
   def mobiles
-    self.contact_attributes.select{|attr| attr.is_a?(Telephone) && attr.category == "mobile"}
+    self.contact_attributes.select{|attr| attr.is_a?(Telephone) && attr.category == "mobile"} if self.contact_attributes
   end
 
   def non_mobile_phones
-    self.contact_attributes.select{|attr| attr.is_a?(Telephone) && attr.category != "mobile"}
+    self.contact_attributes.select{|attr| attr.is_a?(Telephone) && attr.category != "mobile"} if self.contact_attributes
   end
 
   def former_student_at
-    local_statuses.select{|s|s['value']=='former_student'}.map{|s|s['account_name']}
+    local_statuses.select{|s|s['value']=='former_student'}.map{|s|s['account_name']} if self.local_statuses
   end
 
   def prospect_at
-    local_statuses.select{|s|s['value']=='prospect'}.map{|s|s['account_name']}
+    local_statuses.select{|s|s['value']=='prospect'}.map{|s|s['account_name']} if self.local_statuses
   end
 
   # Returns age in years of the contact or nil if age not available
