@@ -18,7 +18,7 @@ module BelongsToContact
   # @return [PadmaContact / PadmaContactDecorator]
   def contact(options={})
     if self.padma_contact.nil? || options[:force_service_call]
-      self.padma_contact = PadmaContact.find(contact_id, {:account_name => self.account_name})
+      self.padma_contact = PadmaContact.find(contact_id, {select: :all, account_name: self.account_name})
     end
     ret = padma_contact
     if options[:decorated] && padma_contact
