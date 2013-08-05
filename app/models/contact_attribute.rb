@@ -1,17 +1,26 @@
 class ContactAttribute < LogicalModel
 
+  # defines ContactAttribute.custom_keys and .async_custom_keys
+  extend ContactAttribute::CustomKeys
+
   AVAILABLE_TYPES = %w(telephone email identification address date_attribute custom_attribute social_network_id)
 
   attr_accessor :public, :primary
 
-  self.attribute_keys = [:_id, :_type, :value, :public, :primary, :contact_id, :account_name]
+  attribute :_id
+  attribute :_type
+  attribute :value
+  attribute :public
+  attribute :primary
+  attribute :account_name
 
-  self.hydra = Contacts::HYDRA
-  self.resource_path = "/v0/contact_attributes"
-  self.use_api_key = true
-  self.api_key_name = "app_key"
-  self.api_key = Contacts::API_KEY
-  self.host  = Contacts::HOST
+  belongs_to :contact, class: 'PadmaContact'
+
+  use_hydra Contacts::HYDRA
+  set_resource_url Contacts::HOST, "/v0/contact_attributes"
+  set_api_key 'app_key', Contacts::API_KEY
+
+  validates :value, :presence => true, :unless => proc { self.is_a? DateAttribute }
 
   def new_record?
     self._id.blank?
@@ -20,8 +29,6 @@ class ContactAttribute < LogicalModel
   def always_public?
     false
   end
-
-  validates :value, :presence => true, :unless => proc { self.is_a? DateAttribute }
 
   def json_root
     :contact_attribute
