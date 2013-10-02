@@ -244,10 +244,9 @@ class PadmaContact < LogicalModel
     params = self.merge_key(params)
 
     response = Typhoeus::Request.get(self.resource_uri+'/by_kshema_id', params: params)
-    
     if response.success?
       unless response.body == 'null'
-        self.from_json(response.body)
+        ActiveSupport::JSON.decode(response.body)
       else
         return nil
       end
