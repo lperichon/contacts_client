@@ -246,7 +246,7 @@ class PadmaContact < LogicalModel
     response = Typhoeus::Request.get(self.resource_uri+'/by_kshema_id', params: params)
     if response.success?
       unless response.body == 'null'
-        ActiveSupport::JSON.decode(response.body)
+        self.new.from_json(response.body)
       else
         return nil
       end
