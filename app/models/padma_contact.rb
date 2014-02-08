@@ -26,7 +26,8 @@ class PadmaContact < LogicalModel
       :check_duplicates,
       :email, # Primary email (contact attribute)
       :telephone, # Primary telephone (contact attribute)
-      :in_active_merge
+      :in_active_merge,
+      :observation
     ]
   self.has_many_keys = [:contact_attributes, :attachments, :tags]
   self.use_api_key = true
