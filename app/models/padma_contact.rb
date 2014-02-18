@@ -27,7 +27,8 @@ class PadmaContact < LogicalModel
       :email, # Primary email (contact attribute)
       :telephone, # Primary telephone (contact attribute)
       :in_active_merge,
-      :observation
+      :observation,
+      :in_professional_training
     ]
   self.has_many_keys = [:contact_attributes, :attachments, :tags]
   self.use_api_key = true
@@ -97,6 +98,10 @@ class PadmaContact < LogicalModel
 
   def persisted?
     self._id.present?
+  end
+
+  def in_professional_training?
+    self.in_professional_training
   end
 
   ContactAttribute::AVAILABLE_TYPES.each do |type|
