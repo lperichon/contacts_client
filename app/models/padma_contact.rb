@@ -261,4 +261,30 @@ class PadmaContact < LogicalModel
     end
   end
 
+  ##
+  # Same parameters as search. Returns average age for scoped contacts
+  #
+  # Parameters:
+  #   @param options [Hash].
+  #   Valid options are:
+  #   * all other options will be sent in :params to WebService
+  #
+  # Usage:
+  #   -- Average age of students at 2014-3-31
+  #   Person.average_age(account_name: 'martinez', status: 'student', local_status: 'student', )
+  def self.average_age(options = {})
+    options = self.merge_key(options)
+
+    response = Typhoeus.post(self.resource_uri+'/calculate/average_age', body: options)
+
+    if response.success?
+      log_ok(response)
+      resp = ActiveSupport::JSON.decode(response.body)
+      return resp['result'].to_f
+    else
+      log_failed(response)
+      return nil
+    end
+  end
+
 end
