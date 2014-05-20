@@ -15,6 +15,7 @@ class PadmaContact < LogicalModel
       :status,
       :local_status, # will only be setted if #find specifies account_name
       :local_statuses,
+      :last_seen_at, # will only be setted if #find specifies account_name
       :last_local_status,
       :local_teacher,
       :global_teacher_username,
