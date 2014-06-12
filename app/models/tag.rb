@@ -11,6 +11,8 @@ class Tag < LogicalModel
   set_api_key(:app_key,Contacts::API_KEY)
 
   self.hydra = Contacts::HYDRA
+  
+  self.expires_in = 10.minutes
 
   validates :name, :presence => true
 
