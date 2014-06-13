@@ -39,6 +39,8 @@ class PadmaContact < LogicalModel
 
   self.enable_delete_multiple = true
 
+  self.expires_in = 10.minutes
+
   validates_presence_of :first_name
   validates_inclusion_of :gender, in: %W(male female), allow_blank: true
   validates_numericality_of :estimated_age, allow_blank: true

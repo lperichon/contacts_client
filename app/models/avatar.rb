@@ -7,4 +7,6 @@ class Avatar < LogicalModel
   self.api_key_name = "app_key"
   self.api_key = Contacts::API_KEY
   self.host  = Contacts::HOST
+
+  self.expires_in = 1.hour
 end

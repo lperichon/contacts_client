@@ -16,6 +16,8 @@ class ContactAttribute < LogicalModel
 
   belongs_to :contact, class: 'PadmaContact'
 
+  self.expires_in = 10.minutes
+  
   use_hydra Contacts::HYDRA
   set_resource_url Contacts::HOST, "/v0/contact_attributes"
   set_api_key 'app_key', Contacts::API_KEY
