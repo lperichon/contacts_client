@@ -14,6 +14,6 @@ Gem::Specification.new do |gem|
   gem.version       = '0.0.26'
 
   gem.add_dependency "railties", ">= 3.1"
-  gem.add_dependency 'logical_model', '~> 0.5.8'
+  gem.add_dependency 'logical_model', '>= 0.5.8'
 
 end
