@@ -3,39 +3,39 @@
 # Configuration for LogicalModel on /config/initializers/contacts_client.rb
 class PadmaContact < LogicalModel
 
-  self.hydra = Contacts::HYDRA
-  self.resource_path = "/v0/contacts"
-  self.attribute_keys =
-    [
-      :_id,
-      :first_name, :last_name,
-      :gender,
-      :estimated_age,
-      :avatar,
-      :status,
-      :local_status, # will only be setted if #find specifies account_name
-      :local_statuses,
-      :last_seen_at, # will only be setted if #find specifies account_name
-      :last_local_status,
-      :local_teacher,
-      :global_teacher_username,
-      :level,
-      :coefficient, # will only be setted if #find specifies account_name
-      :coefficients_counts,
-      :owner_name,
-      :linked, # will only be setted if #find specifies account_name
-      :check_duplicates,
-      :email, # Primary email (contact attribute)
-      :telephone, # Primary telephone (contact attribute)
-      :in_active_merge,
-      :observation,
-      :in_professional_training
-    ]
-  self.has_many_keys = [:contact_attributes, :attachments, :tags]
-  self.use_api_key = true
-  self.api_key_name = "app_key"
-  self.api_key = Contacts::API_KEY
-  self.host  = Contacts::HOST
+  use_hydra Contacts::HYDRA
+
+  set_resource_url Contacts::HOST,'/v0/contacts'
+  set_api_key :app_key, Contacts::API_KEY
+
+  attribute :_id
+  attribute :first_name
+  attribute :last_name
+  attribute :gender
+  attribute :estimated_age
+  attribute :avatar
+  attribute :status
+  attribute :local_status # will only be setted if #find specifies account_name
+  attribute :local_statuses
+  attribute :last_seen_at # will only be setted if #find specifies account_name
+  attribute :last_local_status
+  attribute :local_teacher
+  attribute :global_teacher_username
+  attribute :level
+  attribute :coefficient # will only be setted if #find specifies account_name
+  attribute :coefficients_counts
+  attribute :owner_name
+  attribute :linked # will only be setted if #find specifies account_name
+  attribute :check_duplicates
+  attribute :email # Primary email (contact attribute)
+  attribute :telephone # Primary telephone (contact attribute)
+  attribute :in_active_merge
+  attribute :observation
+  attribute :in_professional_training
+
+  has_many :contact_attributes
+  has_many :attachments
+  has_many :tags
 
   self.enable_delete_multiple = true
 
