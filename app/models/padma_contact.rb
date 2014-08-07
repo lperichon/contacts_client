@@ -208,6 +208,31 @@ class PadmaContact < LogicalModel
     return nil
   end
 
+  DEFAULT_BATCH_SIZE = 500
+  MAX_FAILS = 5
+  ##
+  # 
+  # @return [Array] contacts
+  # @return nil if connection failed
+  def self.batch_search(search_options = {}, batch_options = {})
+    batch_options[:batch_size] ||= DEFAULT_BATCH_SIZE
+    ret = [];
+    
+    page_elements = nil; page = 1; fails = 0;
+    until page_elements == [] || fails >= MAX_FAILS do
+      page_elements = PadmaContact.search(search_options.merge(per_page: batch_options[:batch_size], page: page))
+      if page_elements
+        ret += page_elements 
+        page += 1
+      else
+        fails += 1
+      end
+      fails = 0
+    end 
+
+    return (fails >= MAX_FAILS)? nil : ret
+  end
+
   ##
   # Search is same as paginate but will make POST /search request instead of GET /index
   #
