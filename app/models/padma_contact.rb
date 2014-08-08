@@ -208,29 +208,92 @@ class PadmaContact < LogicalModel
     return nil
   end
 
+  # @see count
+  # Same as count by will make a POST request instead of GET request
+  def self.count_by_post(options)
+    options[:page] = 1
+    options[:per_page] = 1
+
+    options = self.merge_key(options)
+
+    response = Typhoeus.post(self.resource_uri+'/search', body: options)
+    if response.success?
+      log_ok(response)
+      result_set = self.from_json(response.body)
+      return result_set[:total]
+    else
+      log_failed(response)
+      return nil
+    end
+  end
+
   DEFAULT_BATCH_SIZE = 500
-  MAX_FAILS = 5
   ##
-  # 
-  # @return [Array] contacts
-  # @return nil if connection failed
+  #
+  # It's slower than .search BUT if contacts-ws is timing out
+  # this will work because requests are smaller.
+  #
+  # @param search_options [Hash]
+  # @param batch_options [Hash]
+  #
+  # @option search_options any option valid for .search
+  # @option batch_options [Intger] batch_size - Size of batches 
+  # @option batch_options [Integer] total - Total amount of contacts.
+  #         To avoid making an extra call for counting
   def self.batch_search(search_options = {}, batch_options = {})
     batch_options[:batch_size] ||= DEFAULT_BATCH_SIZE
-    ret = [];
-    
-    page_elements = nil; page = 1; fails = 0;
-    until page_elements == [] || fails >= MAX_FAILS do
-      page_elements = PadmaContact.search(search_options.merge(per_page: batch_options[:batch_size], page: page))
-      if page_elements
-        ret += page_elements 
-        page += 1
-      else
-        fails += 1
-      end
-      fails = 0
-    end 
+    ret = nil
 
-    return (fails >= MAX_FAILS)? nil : ret
+    total = batch_options[:total] || self.count_by_post(search_options)
+    if total
+      ret = []
+      (total.to_f/batch_options[:batch_size]).ceil.times do |i|
+        self.async_search(search_options.merge(per_page: batch_options[:batch_size], page: i+1)) do |page_elements|
+          if page_elements
+            ret += page_elements
+          end
+        end
+      end
+    end
+    self.hydra.run
+    ret.sort!{|a,b| a.first_name <=> b.first_name} if ret
+    return ret
+  end
+
+  def self.async_search(options={})
+    options[:page] ||= 1
+    options[:per_page] ||= 9999
+
+    options = self.merge_key(options)
+
+    request = Typhoeus::Request.new(
+      resource_uri('search'),
+      method: :post,
+      body: options,
+      headers: default_headers
+    )
+    request.on_complete do |response|
+      if response.code >= 200 && response.code < 400
+        log_ok(response)
+
+        result_set = self.from_json(response.body)
+
+        # this paginate is will_paginate's Array pagination
+        collection = Kaminari.paginate_array(
+            result_set[:collection],
+            {
+                :total_count=>result_set[:total],
+                :limit => options[:per_page],
+                :offset => options[:per_page] * ([options[:page], 1].max - 1)
+            }
+        )
+
+        yield collection
+      else
+        log_failed(response)
+      end
+    end
+    self.hydra.queue(request)
   end
 
   ##
