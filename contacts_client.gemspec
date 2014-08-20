@@ -11,9 +11,9 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "contacts_client"
   gem.require_paths = ["lib"]
-  gem.version       = '0.0.29'
+  gem.version       = '0.0.30'
 
   gem.add_dependency "railties", ">= 3.1"
-  gem.add_dependency 'logical_model', '>= 0.6.0'
+  gem.add_dependency 'logical_model', '>= 0.6.1'
 
 end
