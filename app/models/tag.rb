@@ -12,8 +12,6 @@ class Tag < LogicalModel
 
   self.hydra = Contacts::HYDRA
   
-  self.expires_in = 10.minutes
-
   validates :name, :presence => true
 
   def json_root
