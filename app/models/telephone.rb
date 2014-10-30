@@ -11,10 +11,6 @@ class Telephone < ContactAttribute
 
   attr_accessor :category, :value, :public, :primary
 
-  before_validation :strip_whitespace
-
-  validates :value, :numericality => true, :unless => :masked?
-
   def masked?
     value.present? && value.last == '#'
   end
@@ -22,9 +18,4 @@ class Telephone < ContactAttribute
   def _type
     self.class.name
   end
-
-  private
-    def strip_whitespace
-      self.value = self.value.strip
-    end
 end
