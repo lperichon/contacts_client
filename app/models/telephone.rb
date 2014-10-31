@@ -1,5 +1,6 @@
 class Telephone < ContactAttribute
   include ActiveModel::Validations::Callbacks
+  before_validation :strip_whitespace
 
   self.attribute_keys = [:_id, :_type, :public, :primary, :category, :value, :contact_id]
   self.hydra = Contacts::HYDRA
@@ -10,10 +11,6 @@ class Telephone < ContactAttribute
   self.host  = Contacts::HOST
 
   attr_accessor :category, :value, :public, :primary
-
-  before_validation :strip_whitespace
-
-  validates :value, :numericality => true, :unless => :masked?
 
   def masked?
     value.present? && value.last == '#'
