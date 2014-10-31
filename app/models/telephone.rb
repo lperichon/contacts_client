@@ -1,5 +1,6 @@
 class Telephone < ContactAttribute
   include ActiveModel::Validations::Callbacks
+  before_validation :strip_whitespace
 
   self.attribute_keys = [:_id, :_type, :public, :primary, :category, :value, :contact_id]
   self.hydra = Contacts::HYDRA
@@ -18,4 +19,9 @@ class Telephone < ContactAttribute
   def _type
     self.class.name
   end
+
+  private
+    def strip_whitespace
+      self.value = self.value.strip
+    end
 end
