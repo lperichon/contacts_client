@@ -1,6 +1,6 @@
 class Address < ContactAttribute
-  attr_accessor :category, :postal_code, :city, :state, :country
-  self.attribute_keys = [:_id, :_type, :public, :primary, :category, :value, :postal_code, :city, :state, :country, :contact_id]
+  attr_accessor :category, :postal_code, :neighborhood, :city, :state, :country
+  self.attribute_keys = [:_id, :_type, :public, :primary, :category, :value, :postal_code, :neighborhood, :city, :state, :country, :contact_id]
 
   self.hydra = Contacts::HYDRA
   self.resource_path = "/v0/contact_attributes"
