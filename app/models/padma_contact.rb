@@ -108,7 +108,7 @@ class PadmaContact < LogicalModel
   ContactAttribute::AVAILABLE_TYPES.each do |type|
     define_method(type.to_s.pluralize) do
       if self.contact_attributes
-        self.contact_attributes.reject { |attr| !attr.is_a? type.to_s.camelize.constantize }.sort_by { |x| [x.primary ? 0 : 1, x._id] }
+        self.contact_attributes.select{ |attr| attr && attr.is_a?(type.to_s.camelize.constantize)}.sort_by{|x| x.primary ? 0 : 1 }
       end
     end
   end
