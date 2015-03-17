@@ -36,6 +36,8 @@ class PadmaContact < LogicalModel
   attribute :kshema_id
   attribute :first_enrolled_on
 
+  attribute :membership
+
   has_many :contact_attributes
   has_many :attachments
   has_many :tags
