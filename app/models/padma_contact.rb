@@ -33,6 +33,8 @@ class PadmaContact < LogicalModel
   attribute :observation
   attribute :in_professional_training
 
+  attribute :membership
+
   has_many :contact_attributes
   has_many :attachments
   has_many :tags
