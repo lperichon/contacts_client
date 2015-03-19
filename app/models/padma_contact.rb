@@ -37,6 +37,7 @@ class PadmaContact < LogicalModel
   attribute :first_enrolled_on
 
   attribute :membership
+  attribute :time_slots
 
   has_many :contact_attributes
   has_many :attachments
