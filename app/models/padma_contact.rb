@@ -382,4 +382,22 @@ class PadmaContact < LogicalModel
     end
   end
 
+  ##
+  # Returns contacts similar to the one specifid by id
+  def self.get_similar_to(contact_id,options={})
+    options[:page] = 1
+    options[:per_page] = 9999
+    similar = nil
+    do_with_resource_path("#{@resource_path}/#{contact_id}/similar") do
+      similar = paginate(options)
+    end
+    similar
+  end
+
+  ##
+  # Returns contacts similar to current on
+  def get_similar(options={})
+   self.class.get_similar_to(id,options) 
+  end
+
 end
