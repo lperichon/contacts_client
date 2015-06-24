@@ -27,6 +27,13 @@ module BelongsToContact
     ret
   end
 
+  def self.prefetch_contacts_for_collection(collection,ws_options={})
+    contact_ids = collection.map(&:contact_id).uniq
+    ws_options = ws_options.merge({ids: contact_ids, per_page: contact_ids.size})
+    contacts = PadmaContact.search(ws_options)
+    collection.each{|i| i.padma_contact= contacts.select{|c|c.id==i.contact_id}.first }
+  end
+
   private
 
   # If padma_contact is setted with a PadmaContact that doesn't match
