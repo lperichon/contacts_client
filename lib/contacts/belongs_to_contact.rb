@@ -4,6 +4,7 @@ module BelongsToContact
 
   def self.included(base)
     base.send(:validate, :padma_contact_setted_correctly)
+    base.extend ClassMethods
   end
 
   attr_accessor :padma_contact
@@ -27,11 +28,15 @@ module BelongsToContact
     ret
   end
 
-  def self.prefetch_contacts_for_collection(collection,ws_options={})
-    contact_ids = collection.map(&:contact_id).uniq
-    ws_options = ws_options.merge({ids: contact_ids, per_page: contact_ids.size})
-    contacts = PadmaContact.search(ws_options)
-    collection.each{|i| i.padma_contact= contacts.select{|c|c.id==i.contact_id}.first }
+  module ClassMethods
+    def prefetch_contacts_for_collection(collection,ws_options={})
+      contact_ids = collection.map(&:contact_id).uniq
+      ws_options = ws_options.merge({ids: contact_ids, per_page: contact_ids.size})
+      contacts = PadmaContact.search(ws_options)
+      if contacts
+        collection.each{|i| i.padma_contact= contacts.select{|c|c.id==i.contact_id}.first }
+      end
+    end
   end
 
   private
