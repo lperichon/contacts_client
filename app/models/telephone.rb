@@ -12,6 +12,8 @@ class Telephone < ContactAttribute
 
   attr_accessor :category, :value, :public, :primary
 
+  validates :value, format: { with: /^[\(|\d][\d| |\)\-|\.]{6,16}.*\d$/ }
+
   def masked?
     value.present? && value.last == '#'
   end
