@@ -36,8 +36,8 @@ class Tag < LogicalModel
     paginate(per_page: 999, account_name: account_name)
   end
 
-  def self.batch_add(tags, contact_ids, account_name)
-    params = { account_name: account_name, tags: tags, contact_ids: contact_ids }
+  def self.batch_add(tags, contact_ids, account_name, params = {})
+    params.merge!({ account_name: account_name, tags: tags, contact_ids: contact_ids })
     params = self.merge_key(params)
 
     response = nil
