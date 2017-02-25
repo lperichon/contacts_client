@@ -12,7 +12,7 @@ class Telephone < ContactAttribute
 
   attr_accessor :category, :value, :public, :primary
 
-  validates :value, format: { with: /^[\(|\d][\d| |\)\-|\.]{6,16}.*\d$/ }
+  validates :value, format: { with: /\A[\(|\d][\d| |\)\-|\.]{6,16}.*\d\z/ }
 
   def masked?
     value.present? && value.last == '#'
@@ -24,6 +24,6 @@ class Telephone < ContactAttribute
 
   private
     def strip_whitespace
-      self.value = self.value.strip
+      self.value = self.value.try(:strip)
     end
 end

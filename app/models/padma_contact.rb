@@ -120,6 +120,10 @@ class PadmaContact < LogicalModel
     end
   end
 
+  def emails
+    self.contact_attributes.select{|attr| attr.is_a?(Contacts::Email)}.sort_by{|x| x.primary ? 0 : 1 } if self.contact_attributes
+  end
+
   def facebook_id
     self.contact_attributes.select{|attr| attr.is_a?(SocialNetworkId) && attr.category == "facebook"}.first if self.contact_attributes
   end

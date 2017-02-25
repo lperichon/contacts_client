@@ -3,7 +3,7 @@ class ContactAttribute < LogicalModel
   # defines ContactAttribute.custom_keys and .async_custom_keys
   extend ContactAttribute::CustomKeys
 
-  AVAILABLE_TYPES = %w(telephone email identification address date_attribute custom_attribute social_network_id occupation)
+  AVAILABLE_TYPES = %w(telephone identification address date_attribute custom_attribute social_network_id occupation)
 
   attr_accessor :public, :primary
 

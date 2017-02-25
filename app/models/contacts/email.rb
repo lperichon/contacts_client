@@ -1,3 +1,4 @@
+module Contacts
 class Email < ContactAttribute
   include ActiveModel::Validations::Callbacks
 
@@ -14,13 +15,14 @@ class Email < ContactAttribute
   attr_accessor :category, :value, :public, :primary
 
   def _type
-    self.class.name
+    "Email"
   end
 
-  validates :value, :email_format => true
+  #validates :value, :email_format => true
 
   private
     def strip_whitespace
-      self.value = self.value.strip
+      self.value = self.value.try(:strip)
     end
+end
 end
